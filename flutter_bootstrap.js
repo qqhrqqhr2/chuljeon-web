@@ -47,7 +47,7 @@ _flutter.buildConfig = {"engineRevision":"deb287481e3ce9468f3434937ced4240a70539
 // 아래 cdn 값은 tools/release_web.py 가 판마다 jsDelivr 주소로 바꿔 넣는다 (예: https://cdn.jsdelivr.net/gh/<계정>/chuljeon-web@1.0.0-1/).
 // 바꾸지 않은 개발 빌드이거나 CDN 이 안 열리면 이 사이트(Firebase)에서 그대로 받는다.
 (async () => {
-  const cdn = "https://cdn.jsdelivr.net/gh/qqhrqqhr2/chuljeon-web@1.0.0-2/";
+  const cdn = "https://cdn.jsdelivr.net/gh/qqhrqqhr2/chuljeon-web@1.0.0-3/";
   let base = "";
   if (!cdn.startsWith("__")) {
     try {
