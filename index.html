@@ -33,8 +33,30 @@
 
   <title>출제ON</title>
   <link rel="manifest" href="manifest.json">
+  <!-- 앱을 받는 동안 흰 빈 화면 대신 로고·진행 표시, 다크 모드면 어두운 바탕 (2단계 디자인 D1S3).
+       Flutter 가 첫 화면을 그리면 flt-glass-pane 이 위를 덮고, #boot 는 앱이 지운다 -->
+  <style>
+    html, body { margin: 0; height: 100%; background: #FAF9FE; }
+    #boot { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 16px; font-family: sans-serif; color: #5B3FE0; padding: 0 24px; text-align: center; }
+    #boot img { width: 72px; height: 72px; border-radius: 16px; }
+    #boot .bar { width: 120px; height: 4px; border-radius: 2px; background: #F2EEFF; overflow: hidden; }
+    #boot .bar::after { content: ""; display: block; width: 40%; height: 100%; background: #7B61FF;
+                        animation: boot 1.2s ease-in-out infinite; }
+    @keyframes boot { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
+    @media (prefers-reduced-motion: reduce) { #boot .bar::after { animation: none; width: 100%; } }
+    @media (prefers-color-scheme: dark) {
+      html, body { background: #15131C; }
+      #boot { color: #B7A8FF; }
+      #boot .bar { background: #2A2342; }
+    }
+  </style>
 </head>
 <body>
+  <div id="boot" aria-label="출제ON 여는 중" role="progressbar">
+    <img src="icons/Icon-192.png" alt="">
+    <div class="bar"></div>
+  </div>
   <!--
     You can customize the "flutter_bootstrap.js" script.
     This is useful to provide a custom configuration to the Flutter loader

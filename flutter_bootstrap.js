@@ -46,8 +46,17 @@ _flutter.buildConfig = {"engineRevision":"deb287481e3ce9468f3434937ced4240a70539
 // 그리기 엔진(CanvasKit)은 원래 구글 CDN(gstatic)에서 온다.
 // 아래 cdn 값은 tools/release_web.py 가 판마다 jsDelivr 주소로 바꿔 넣는다 (예: https://cdn.jsdelivr.net/gh/<계정>/chuljeon-web@1.0.0-1/).
 // 바꾸지 않은 개발 빌드이거나 CDN 이 안 열리면 이 사이트(Firebase)에서 그대로 받는다.
+let bootDidFail = false;
+function bootFailed() {
+  bootDidFail = true;
+  const boot = document.getElementById("boot");
+  if (!boot) return;
+  boot.innerHTML = '<p style="margin:0;font-size:16px">출제ON 을 열지 못했어요. 인터넷 연결을 확인해 주세요</p>' +
+    '<button onclick="location.reload()" style="font-size:16px;padding:10px 20px;border-radius:999px;border:0;background:#5B3FE0;color:#fff;cursor:pointer">다시 열기</button>';
+}
+
 (async () => {
-  const cdn = "https://cdn.jsdelivr.net/gh/qqhrqqhr2/chuljeon-web@1.0.0-3/";
+  const cdn = "https://cdn.jsdelivr.net/gh/qqhrqqhr2/chuljeon-web@1.0.0-4/";
   let base = "";
   if (!cdn.startsWith("__")) {
     try {
@@ -60,7 +69,29 @@ _flutter.buildConfig = {"engineRevision":"deb287481e3ce9468f3434937ced4240a70539
       // CDN 이 막혔으면 이 사이트에서
     }
   }
+  const config = base ? { entrypointBaseUrl: base, assetBase: base } : {};
   _flutter.loader.load({
-    config: base ? { entrypointBaseUrl: base, assetBase: base } : {},
+    config,
+    // 앱을 띄운 뒤 index.html 의 여는 중 화면(#boot)을 지운다 (2단계 디자인 D1S3)
+    onEntrypointLoaded: async (engineInitializer) => {
+      try {
+        const appRunner = await engineInitializer.initializeEngine(config);
+        await appRunner.runApp();
+        // 첫 그림이 나온 뒤 지움 (바로 지우면 잠깐 빈 바탕이 보임)
+        requestAnimationFrame(() => requestAnimationFrame(() => document.getElementById("boot")?.remove()));
+      } catch (e) {
+        bootFailed();
+        throw e;
+      }
+    },
   });
+  // 오래 걸리면 막대는 둔 채 보조 안내만 — 느린 망에서 받는 중인데 실패로 바꾸면 다시 처음부터 받게 됨 (R8c6-3·R90e-3)
+  setTimeout(() => {
+    const boot = document.getElementById("boot");
+    // 이미 실패 안내를 띄웠으면 '아직 여는 중' 을 덧붙이지 않음 (R55b-4)
+    if (boot && !bootDidFail && !document.getElementById("boot-slow")) {
+      boot.insertAdjacentHTML("beforeend", '<p id="boot-slow" style="margin:0;font-size:14px">아직 여는 중이에요. 너무 오래 걸리면 아래를 눌러 주세요' +
+        '</p><button onclick="location.reload()" style="font-size:15px;padding:10px 18px;border-radius:999px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer">다시 열기</button>');
+    }
+  }, 40000);
 })();
