@@ -3,7 +3,7 @@
     "short_name": "출제ON",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#FAF9FE",
+    "background_color": "#F5F6FB",
     "theme_color": "#7B61FF",
     "description": "학원 시험지 만들기",
     "orientation": "any",
