@@ -56,7 +56,7 @@ function bootFailed() {
 }
 
 (async () => {
-  const cdn = "https://cdn.jsdelivr.net/gh/qqhrqqhr2/chuljeon-web@1.0.0-11/";
+  const cdn = "https://cdn.jsdelivr.net/gh/qqhrqqhr2/chuljeon-web@1.0.0-12/";
   let base = "";
   if (!cdn.startsWith("__")) {
     try {
