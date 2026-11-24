@@ -56,20 +56,21 @@ function bootFailed() {
 }
 
 (async () => {
-  const cdn = "https://cdn.jsdelivr.net/gh/qqhrqqhr2/chuljeon-web@1.0.0-17/";
+  const cdn = "https://cdn.jsdelivr.net/gh/qqhrqqhr2/chuljeon-web@1.0.0-18-assets/";
   let base = "";
   if (!cdn.startsWith("__")) {
     try {
       const ctl = new AbortController();
       const timer = setTimeout(() => ctl.abort(), 4000);
       const r = await fetch(cdn + "version.json", { signal: ctl.signal, cache: "no-store" });
+      
+      if (r.ok && (await fetch("https://cdn.jsdelivr.net/gh/qqhrqqhr2/chuljeon-web@1.0.0-18-app/version.json", {signal: ctl.signal, cache: "no-store"})).ok) base = cdn;
       clearTimeout(timer);
-      if (r.ok) base = cdn;
     } catch (e) {
       // CDN 이 막혔으면 이 사이트에서
     }
   }
-  const config = base ? { entrypointBaseUrl: base, assetBase: base } : {};
+  const config = base ? { entrypointBaseUrl: "https://cdn.jsdelivr.net/gh/qqhrqqhr2/chuljeon-web@1.0.0-18-app/", assetBase: base } : {};
   _flutter.loader.load({
     config,
     // 앱을 띄운 뒤 index.html 의 여는 중 화면(#boot)을 지운다 (2단계 디자인 D1S3)
