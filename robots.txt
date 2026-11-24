@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /
+# Allow the entry documents so compliant search engines can read noindex.
+Allow: /$
+Allow: /index.html$
+Allow: /robots.txt$
