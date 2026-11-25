@@ -1,3 +1,3 @@
-# chuljeon-web
+# chuljeon-web (1.0.0-29-fonts)
 
-출제ON 웹 앱의 큰 파일(빌드 결과)을 jsDelivr CDN 으로 나눠 주는 저장소예요. 직접 고치지 않아요 — ChuljeON `tools/release_web.py` 가 만들어요.
+출제ON 웹 앱 UI 불변 글꼴(Paperlogy 3종 · SUIT 6종, OFL) jsDelivr CDN 슬라이스입니다.
